@@ -1,32 +1,19 @@
 "use client";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 let renderCount = 0;
 
-type FormValues = {
-  name: string;
-  age: string;
-  pets: { name: string }[];
-};
 export default function Home() {
   // renderCount++;
   const {
     register,
     handleSubmit,
     formState: { errors },
-    control,
-  } = useForm<FormValues>({
-    mode: "onChange",
+  } = useForm({
     defaultValues: {
       name: "",
       age: "",
-      pets: [],
     },
-  });
-
-  const { fields, append, prepend } = useFieldArray({
-    control,
-    name: "pets",
   });
 
   console.log({ errors });
@@ -54,24 +41,6 @@ export default function Home() {
           type="number"
         />
         <p>{errors.age?.message}</p>
-
-        <p>pets</p>
-        <div>
-          {fields.map((field, index) => {
-            return (
-              <input
-                key={field.id}
-                {...(register(`pets.${index}.name`), { required: true })}
-              />
-            );
-          })}
-        </div>
-        <button type="button" onClick={() => append({ name: "append" })}>
-          append
-        </button>
-        <button type="button" onClick={() => prepend({ name: "prepend" })}>
-          prepend
-        </button>
         <input type="submit" />
       </form>
     </div>
